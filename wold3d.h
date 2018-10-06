@@ -7,6 +7,7 @@
 
 #include "minilibx/mlx.h"
 #include <stdlib.h>
+#include "libft/libft.h"
 
 #define mapWidth 24
 #define mapHeight 24
@@ -62,6 +63,7 @@ typedef struct {
     double      sideDistY;
     double      deltaDistX;
     double      deltaDistY;
+    int         **map;
 } t_casting;
 
 #endif //WOLF3D_WOLD3D_H

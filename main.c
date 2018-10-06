@@ -36,9 +36,6 @@ t_vector mulOnValue(t_vector vec, double val) {
 
 void ft_color(t_main *m, int x, int y, int color) {
     *((int*)(m->data + x * m->bpp / 8 + y * m->size_l)) = color;
-//        m->data[x * m->bpp / 8 + y * m->size_l] = 255;
-//    m->data[x * m->bpp / 8 + y * m->size_l + 1] = 0;
-//    m->data[x * m->bpp / 8 + y * m->size_l + 2] = 0;
 }
 
 void draw_line(t_main *m, int x, int start, int end, int color){
@@ -53,17 +50,15 @@ void draw(t_main *m, t_casting *c, int x, int drawStart, int drawEnd) {
 
     switch(worldMap[c->mapX][c->mapY])
     {
-        case 1:  color = 16711680;  break; //red
+        case 1:  color = 16711680;  break;
         case 2:  color = 65280;  break; //green
         case 3:  color = 255;   break; //blue
         case 4:  color = 16777215;  break; //white
         default: color = 16776960; break; //yellow
     }
-
-    //give x and y sides different brightness
-    if (c->side == 1) {color = color / 2;}
-
-    //draw the pixels of the stripe as a vertical line
+    if (c->side == 1) {
+        color = color / 2;
+    }
     draw_line(m, x, drawStart, drawEnd, color);
 }
 
@@ -171,7 +166,6 @@ void rotate_l(t_casting *c) {
 void move(t_casting *c, int keycode) {
     double moveSpeed = 1;
     if (keycode == 0) {
-        printf("%f\n =MOVE", c->pos.x);
         t_vector x = addVector(c->pos, mulOnValue(c->dir, moveSpeed));
         if (worldMap[(int)x.x][(int)c->pos.y] == 0)
             c->pos.x += c->dir.x * moveSpeed;
@@ -179,7 +173,6 @@ void move(t_casting *c, int keycode) {
             c->pos.y += c->dir.y * moveSpeed;
     }
     if (keycode == 1) {
-        printf("%f\n =MOVE", c->pos.x);
         t_vector x = subVector(c->pos, mulOnValue(c->dir, moveSpeed));
         if (worldMap[(int)x.x][(int)c->pos.y] == 0)
             c->pos.x -= c->dir.x * moveSpeed;
@@ -189,24 +182,37 @@ void move(t_casting *c, int keycode) {
 }
 
 int press_key(int keycode, t_casting *c) {
-    printf("%d\n", keycode);
     if (keycode == 53)
         exit(0);
-    if (keycode == 119)
+    if (keycode == 126)
         move(c, 0);
-    if (keycode == 115)
+    if (keycode == 125)
         move(c, 1);
-    if (keycode == 100)
+    if (keycode == 2)
         rotate_r(c);
-    if (keycode == 97)
+    if (keycode == 0)
         rotate_l(c);
     ft_image(c, &m);
     return 0;
 }
 
-int main() {
+void readMap(t_casting *c, int ac, char **av) {
+    int fd;
+    char *line;
+    int cnt = 0;
+
+    fd = open(av[1], O_RDONLY);
+    if (fd == -1)
+        exit (0);
+    while (get_next_line(fd, &line) > 0) {
+        cnt++;
+    }
+}
+
+int main(int ac, char **av) {
     t_casting c;
 
+    readMap(&c, ac, av);
     c.dir.x = -1;
     c.dir.y = 0;
     c.pos.x = 11;
