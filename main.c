@@ -4,6 +4,15 @@
 
 t_main m;
 
+void print_map(t_casting *c) {
+    for (int i = 0; i < 30; i++) {
+        for (int j = 0; j < 30; j++) {
+            printf("%c",c->map[i][j]);
+        }
+        printf("\n");
+    }
+}
+
 t_vector subVector(t_vector first, t_vector second) {
     t_vector result;
 
@@ -48,7 +57,8 @@ void draw_line(t_main *m, int x, int start, int end, int color){
 void draw(t_main *m, t_casting *c, int x, int drawStart, int drawEnd) {
     int color;
 
-    switch(worldMap[c->mapX][c->mapY])
+    printf("%d\n", c->map[c->mapX][c->mapY]);
+    switch(c->map[c->mapX][c->mapY])
     {
         case 1:  color = 16711680;  break;
         case 2:  color = 65280;  break; //green
@@ -74,7 +84,7 @@ void dda(t_casting *c) {
             c->mapY += c->stepY;
             c->side = 1;
         }
-        if (worldMap[c->mapX][c->mapY] > 0)
+        if (c->map[c->mapX][c->mapY] > 0)
             c->hit = 1;
     }
 }
@@ -167,16 +177,16 @@ void move(t_casting *c, int keycode) {
     double moveSpeed = 1;
     if (keycode == 0) {
         t_vector x = addVector(c->pos, mulOnValue(c->dir, moveSpeed));
-        if (worldMap[(int)x.x][(int)c->pos.y] == 0)
+        if (c->map[(int)x.x][(int)c->pos.y] == 0)
             c->pos.x += c->dir.x * moveSpeed;
-        if (worldMap[(int)c->pos.x][(int)x.y] == 0)
+        if (c->map[(int)c->pos.x][(int)x.y] == 0)
             c->pos.y += c->dir.y * moveSpeed;
     }
     if (keycode == 1) {
         t_vector x = subVector(c->pos, mulOnValue(c->dir, moveSpeed));
-        if (worldMap[(int)x.x][(int)c->pos.y] == 0)
+        if (c->map[(int)x.x][(int)c->pos.y] == 0)
             c->pos.x -= c->dir.x * moveSpeed;
-        if (worldMap[(int)c->pos.x][(int)x.y] == 0)
+        if (c->map[(int)c->pos.x][(int)x.y] == 0)
             c->pos.y -= c->dir.y * moveSpeed;
     }
 }
@@ -184,13 +194,13 @@ void move(t_casting *c, int keycode) {
 int press_key(int keycode, t_casting *c) {
     if (keycode == 53)
         exit(0);
-    if (keycode == 126)
+    if (keycode == 119)
         move(c, 0);
-    if (keycode == 125)
+    if (keycode == 115)
         move(c, 1);
-    if (keycode == 2)
+    if (keycode == 100)
         rotate_r(c);
-    if (keycode == 0)
+    if (keycode == 97)
         rotate_l(c);
     ft_image(c, &m);
     return 0;
@@ -205,8 +215,31 @@ void readMap(t_casting *c, int ac, char **av) {
     if (fd == -1)
         exit (0);
     while (get_next_line(fd, &line) > 0) {
+        int first;
+        int second;
+        char **size;
+
+        if (cnt == 0) {
+            size = ft_strsplit(line, ' ');
+            printf("%s\n", size[0]);
+            printf("%s\n", size[1]);
+            first = ft_atoi(size[0]);
+            second = ft_atoi(size[1]);
+            c->map = (int**)malloc(sizeof(int*) * first + 1);
+        }
+        else {
+            int i = 0;
+
+            c->map[cnt-1] = (int*)malloc(sizeof(int) * second + 1);
+            while (line[i]) {
+                char a = line[i];
+                c->map[cnt - 1][i] = a - '0';
+                i++;
+            }
+        }
         cnt++;
     }
+    close(fd);
 }
 
 int main(int ac, char **av) {
