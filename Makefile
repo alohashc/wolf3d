@@ -18,7 +18,7 @@ GCC = gcc
 all: $(NAME)
 
 $(NAME): $(OBJ) ./libft/libft.a
-	$(GCC) $(OBJ) -L./libft/ -lm -lft -lmlx -lXext -lX11 -L ./minilibx -I ./minilibx -o $(NAME)
+	$(GCC) $(OBJ) -L./libft/ -lft -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
 ./libft/libft.a:
 	make -C libft

@@ -14,9 +14,10 @@ int main(int ac, char **av) {
     c.start_val.av = av;
     init(&m, &c, &t);
     c.text = t;
+	m.cast = c;
     ft_image(&c, &m, &t);
-    m.cast = c;
     mlx_hook(m.win, 2, 3, press_key, &m);
+	mlx_hook(m.win, 17, 1L << 17, press_exit, &m);
     mlx_loop(m.mlx);
     return 0;
 }

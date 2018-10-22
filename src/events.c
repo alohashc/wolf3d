@@ -42,7 +42,14 @@ void move(t_main *m, int keycode) {
     }
 }
 
+int			press_exit(t_main *m)
+{
+	m = NULL;
+	exit(0);
+}
+
 int press_key(int keycode, t_main *m) {
+	printf("%d\n", keycode);
     if (keycode == ESC)
         exit(0);
     if (keycode == W)

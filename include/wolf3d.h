@@ -18,10 +18,10 @@
 #define RAD_R -M_PI * 2 / 180
 #define RAD_L M_PI * 2 / 180
 
-#define W 119
-#define S 115
-#define ROT_R 100
-#define ROT_L 97
+#define W 126
+#define S 125
+#define ROT_R 124
+#define ROT_L 123
 #define ESC 53
 
 
@@ -106,5 +106,6 @@ void draw(t_main *m, t_casting *c, t_textures *t, int x);
 void ft_color(t_main *m, t_casting *c, int num, int side);
 void raycasting(t_main *m, t_casting *c, t_textures *t);
 int press_key(int keycode, t_main *m);
+int	press_exit(t_main *m);
 
 #endif //WOLF3D_WOLF3D_H

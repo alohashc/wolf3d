@@ -72,10 +72,11 @@ void readMap(t_casting *c, int ac, char **av) {
     }
     while (get_next_line(fd, &line) > 0) {
         if (cnt == 0)
-            validateMapSize(c, &line);
+           validateMapSize(c, &line);
         else
             validateMap(c, line, cnt);
         cnt++;
+		free(line);
     }
     close(fd);
 }
